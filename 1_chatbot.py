@@ -21,20 +21,33 @@ def add_assistant_message(messages, text):
 
 def chat(messages):
     response = client.chat.completions.create(
-        model="nex-agi/nex-n2-pro:free", # 1. Model updated here
+        model="google/gemini-2.5-flash-lite", # 1. Model updated here
         messages=messages,
         temperature=0.2, # Added temperature (lower = more precise, good for math)
+        stream=True,     # Enable streaming
     )
-    return response.choices[0].message.content
+    
+    print("\nAI: ", end="", flush=True)
+    full_response = ""
+    
+    # Iterate through the stream of chunks
+    for chunk in response:
+        content = chunk.choices[0].delta.content
+        if content is not None:
+            print(content, end="", flush=True) # Print immediately
+            full_response += content           # Save to add to history later
+            
+    print("\n") # Newline when finished
+    return full_response
 
 # --- Main Chatbot Loop ---
 
-print("Welcome to the Math Tutor Chatbot! Type 'quit' or 'exit' to stop.\n")
+print("Welcome to the  Chatbot! Type 'quit' or 'exit' to stop.\n")
 
 # 2. Add the System Prompt here! 
 # Instead of an empty list, we start with the system instructions.
 messages = [
-    {"role": "system", "content": "You are an expert math tutor. You provide clear, step-by-step explanations for mathematical problems and encourage the student."}
+    {"role": "system", "content": "you are python software developer expert who give me very accurate and perfect answer "}
 ]
 
 # Repeat the process in a loop
@@ -56,9 +69,6 @@ while True:
         
         # Add generated text to the list of messages
         add_assistant_message(messages, generated_text)
-        
-        # print the generated text
-        print(f"\nMath Tutor: {generated_text}\n")
         
     except Exception as e:
         print(f"An error occurred: {e}")
