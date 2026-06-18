@@ -23,6 +23,7 @@ def chat(messages):
     response = client.chat.completions.create(
         model="nex-agi/nex-n2-pro:free", # 1. Model updated here
         messages=messages,
+        temperature=0.2, # Added temperature (lower = more precise, good for math)
     )
     return response.choices[0].message.content
 
