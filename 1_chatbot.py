@@ -47,7 +47,9 @@ print("Welcome to the  Chatbot! Type 'quit' or 'exit' to stop.\n")
 # 2. Add the System Prompt here! 
 # Instead of an empty list, we start with the system instructions.
 messages = [
-    {"role": "system", "content": "you are python software developer expert who give me very accurate and perfect answer "}
+    {
+        "role": "system", "content": "you are python software developer expert who give me very accurate andperfect answer answer in python code with example and explaination. you are very helpful and friendly. you are very good at python programming and you are very good at solving problems."
+     }
 ]
 
 # Repeat the process in a loop
